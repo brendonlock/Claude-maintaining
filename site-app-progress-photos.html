@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Progress photos — Eden Property</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFFFFF;
+    --page:#FAFAF9;
+    --ink:#18181B;
+    --ink-soft:#6B6B67;
+    --ink-faint:#A6A6A1;
+    --rule:#EDEDEA;
+    --accent:#D2601F;
+    --accent-soft:#FBEEE4;
+    --green:#3D7A50;
+    --green-soft:#EAF3EC;
+    --blue:#3A6B8A;
+    --blue-soft:#EAF1F4;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--page);
+    color:var(--ink);
+    font-family:'Inter',sans-serif;
+    font-size:14px;
+    padding:0 0 5rem;
+    -webkit-font-smoothing:antialiased;
+  }
+  .mono{font-family:'IBM Plex Mono',monospace;}
+
+  header{
+    padding:2.5rem 2.5rem 1.5rem;
+    max-width:1180px;
+    margin:0 auto;
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    flex-wrap:wrap;
+    gap:1.5rem;
+  }
+  header .eyebrow{
+    font-family:'IBM Plex Mono',monospace;
+    font-size:11px;
+    color:var(--ink-faint);
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    margin-bottom:6px;
+  }
+  header h1{
+    font-size:24px;
+    font-weight:500;
+    letter-spacing:-0.01em;
+  }
+  header .addr{
+    color:var(--ink-soft);
+    font-size:13px;
+    margin-top:3px;
+  }
+  header .right{display:flex;align-items:center;gap:2rem;}
+  header .upload-btn{
+    background:var(--ink);
+    color:#fff;
+    border:none;
+    font-size:13px;
+    padding:9px 16px;
+    border-radius:6px;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    gap:6px;
+  }
+
+  .house-tabs{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 2.5rem;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    border-bottom:1px solid var(--rule);
+    flex-wrap:wrap;
+    gap:1rem;
+  }
+  .tab-group{display:flex;gap:1.75rem;}
+  .tab-group button{
+    background:none;
+    border:none;
+    font-family:'Inter',sans-serif;
+    font-size:13.5px;
+    color:var(--ink-faint);
+    padding:0 0 12px;
+    cursor:pointer;
+    border-bottom:2px solid transparent;
+    margin-bottom:-1px;
+  }
+  .tab-group button.active{
+    color:var(--ink);
+    font-weight:500;
+    border-bottom-color:var(--ink);
+  }
+  .status-filter{
+    display:flex;
+    gap:8px;
+    padding-bottom:10px;
+  }
+  .status-filter button{
+    background:var(--bg);
+    border:1px solid var(--rule);
+    border-radius:20px;
+    font-size:12px;
+    color:var(--ink-soft);
+    padding:5px 12px;
+    cursor:pointer;
+  }
+  .status-filter button.active{
+    background:var(--ink);
+    color:#fff;
+    border-color:var(--ink);
+  }
+
+  main{
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 2.5rem;
+  }
+
+  .summary-row{
+    display:flex;
+    gap:2.5rem;
+    margin:1.75rem 0 2rem;
+  }
+  .summary-row .item .num{font-size:20px;font-weight:500;}
+  .summary-row .item .lbl{font-size:12px;color:var(--ink-soft);}
+  .summary-row .item.flag .num{color:var(--accent);}
+
+  .gallery{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:1.25rem;
+  }
+
+  .photo-card{
+    background:var(--bg);
+    border:1px solid var(--rule);
+    border-radius:10px;
+    overflow:hidden;
+  }
+  .photo-frame{
+    position:relative;
+    aspect-ratio:4/3;
+    background:var(--rule);
+    overflow:hidden;
+  }
+  .photo-frame img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+  }
+  .stamp{
+    position:absolute;
+    left:10px;
+    bottom:10px;
+    background:rgba(24,24,27,0.72);
+    color:#fff;
+    font-family:'IBM Plex Mono',monospace;
+    font-size:10.5px;
+    padding:4px 8px;
+    border-radius:5px;
+    line-height:1.5;
+  }
+  .stamp .date{display:block;}
+  .house-badge{
+    position:absolute;
+    top:10px;
+    right:10px;
+    background:rgba(255,255,255,0.92);
+    color:var(--ink);
+    font-size:11px;
+    font-weight:500;
+    width:24px;
+    height:24px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .flag-badge{
+    position:absolute;
+    top:10px;
+    left:10px;
+    background:var(--accent);
+    color:#fff;
+    font-size:10px;
+    padding:3px 8px;
+    border-radius:5px;
+    font-weight:500;
+  }
+  .photo-body{padding:12px 14px;}
+  .photo-body .caption{font-size:13px;line-height:1.4;margin-bottom:6px;}
+  .photo-body .meta-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+  }
+  .photo-body .uploader{font-size:11px;color:var(--ink-faint);}
+  .status-pill{
+    font-size:10.5px;
+    padding:2px 8px;
+    border-radius:10px;
+  }
+  .status-pill.ok{background:var(--green-soft);color:var(--green);}
+  .status-pill.flag{background:var(--accent-soft);color:var(--accent);}
+
+  .empty-state{
+    text-align:center;
+    padding:4rem 0;
+    color:var(--ink-faint);
+    font-size:13px;
+    grid-column:1/-1;
+  }
+
+  footer.tabbar{
+    max-width:1180px;
+    margin:3rem auto 0;
+    padding:1.25rem 2.5rem 0;
+    border-top:1px solid var(--rule);
+    display:flex;
+    gap:2rem;
+  }
+  footer.tabbar a{
+    font-size:12px;
+    color:var(--ink-faint);
+    padding-bottom:4px;
+    text-decoration:none;
+    cursor:pointer;
+  }
+  footer.tabbar a:hover{
+    color:var(--ink-soft);
+  }
+  footer.tabbar a.active{
+    color:var(--ink);
+    border-bottom:2px solid var(--ink);
+  }
+  footer.tabbar a.disabled{
+    cursor:default;
+    pointer-events:none;
+    opacity:0.45;
+  }
+
+  @media (max-width:920px){
+    .gallery{grid-template-columns:1fr 1fr;}
+    header{padding:2rem 1.5rem 1.5rem;}
+    .house-tabs{padding:0 1.5rem;}
+    main{padding:0 1.5rem;}
+    footer.tabbar{padding:1.25rem 1.5rem 0;}
+  }
+  @media (max-width:600px){
+    .gallery{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="left">
+    <div class="eyebrow">Progress photos</div>
+    <h1>Kings Crown Investments</h1>
+    <div class="addr">5 Eden Road, Claremont, Cape Town</div>
+  </div>
+  <div class="right">
+    <button class="upload-btn">+ Add photo</button>
+  </div>
+</header>
+
+<nav class="house-tabs">
+  <div class="tab-group">
+    <button class="active" data-house="all">All houses</button>
+    <button data-house="A">House A</button>
+    <button data-house="B">House B</button>
+    <button data-house="C">House C</button>
+  </div>
+  <div class="status-filter">
+    <button class="active" data-status="all">All</button>
+    <button data-status="flag">Flagged</button>
+    <button data-status="ok">On track</button>
+  </div>
+</nav>
+
+<main>
+
+  <div class="summary-row">
+    <div class="item">
+      <div class="num" id="sum-total">9</div>
+      <div class="lbl">Photos this week</div>
+    </div>
+    <div class="item flag">
+      <div class="num" id="sum-flag">2</div>
+      <div class="lbl">Flagged issues</div>
+    </div>
+    <div class="item">
+      <div class="num" id="sum-ok">7</div>
+      <div class="lbl">On track</div>
+    </div>
+  </div>
+
+  <div class="gallery" id="gallery">
+
+    <div class="photo-card" data-house-item="A" data-status="ok">
+      <div class="photo-frame">
+        <img src="https://picsum.photos/seed/edenA1/500/375" alt="Foundation progress, House A">
+        <div class="house-badge">A</div>
+        <div class="stamp"><span class="date">Wed 01 Jul, 08:14</span></div>
+      </div>
+      <div class="photo-body">
+        <div class="caption">Foundation poured, section 2</div>
+        <div class="meta-row">
+          <span class="uploader">Jaco M.</span>
+          <span class="status-pill ok">On track</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="photo-card" data-house-item="A" data-status="flag">
+      <div class="photo-frame">
+        <img src="https://picsum.photos/seed/edenA2/500/375" alt="Rebar spacing issue, House A">
+        <div class="flag-badge">Flagged</div>
+        <div class="house-badge">A</div>
+        <div class="stamp"><span class="date">Wed 01 Jul, 14:02</span></div>
+      </div>
+      <div class="photo-body">
+        <div class="caption">Rebar spacing wider than spec in north corner</div>
+        <div class="meta-row">
+          <span class="uploader">Jaco M.</span>
+          <span class="status-pill flag">Needs attention</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="photo-card" data-house-item="A" data-status="ok">
+      <div class="photo-frame">
+        <img src="https://picsum.photos/seed/edenA3/500/375" alt="Boundary fence repair, House A">
+        <div class="house-badge">A</div>
+        <div class="stamp"><span class="date">Mon 29 Jun, 16:40</span></div>
+      </div>
+      <div class="photo-body">
+        <div class="caption">Boundary fence repair complete</div>
+        <div class="meta-row">
+          <span class="uploader">Tom S.</span>
+          <span class="status-pill ok">On track</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="photo-card" data-house-item="B" data-status="flag">
+      <div class="photo-frame">
+        <img src="https://picsum.photos/seed/edenB1/500/375" alt="Plumbing leak, House B">
+        <div class="flag-badge">Flagged</div>
+        <div class="house-badge">B</div>
+        <div class="stamp"><span class="date">Thu 02 Jul, 09:51</span></div>
+      </div>
+      <div class="photo-body">
+        <div class="caption">Leak under kitchen sink, joint not sealed</div>
+        <div class="meta-row">
+          <span class="uploader">Tom S.</span>
+          <span class="status-pill flag">Needs attention</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="photo-card" data-house-item="B" data-status="ok">
+      <div class="photo-frame">
+        <img src="https://picsum.photos/seed/edenB2/500/375" alt="Plasterboard fitted, House B">
+        <div class="house-badge">B</div>
+        <div class="stamp"><span class="date">Fri 27 Jun, 11:20</span></div>
+      </div>
+      <div class="photo-body">
+        <div class="caption">Plasterboard fitted, upstairs bedrooms</div>
+        <div class="meta-row">
+          <span class="uploader">Jaco M.</span>
+          <span class="status-pill ok">On track</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="photo-card" data-house-item="B" data-status="ok">
+      <div class="photo-frame">
+        <img src="https://picsum.photos/seed/edenB3/500/375" alt="Tiles delivered, House B">
+        <div class="house-badge">B</div>
+        <div class="stamp"><span class="date">Thu 02 Jul, 13:05</span></div>
+      </div>
+      <div class="photo-body">
+        <div class="caption">Bathroom tiles delivered and stacked</div>
+        <div class="meta-row">
+          <span class="uploader">Riaan K.</span>
+          <span class="status-pill ok">On track</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="photo-card" data-house-item="C" data-status="ok">
+      <div class="photo-frame">
+        <img src="https://picsum.photos/seed/edenC1/500/375" alt="Roof tiling, House C">
+        <div class="house-badge">C</div>
+        <div class="stamp"><span class="date">Tue 24 Jun, 15:30</span></div>
+      </div>
+      <div class="photo-body">
+        <div class="caption">Roof tiling complete</div>
+        <div class="meta-row">
+          <span class="uploader">Riaan K.</span>
+          <span class="status-pill ok">On track</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="photo-card" data-house-item="C" data-status="ok">
+      <div class="photo-frame">
+        <img src="https://picsum.photos/seed/edenC2/500/375" alt="Windows installed, House C">
+        <div class="house-badge">C</div>
+        <div class="stamp"><span class="date">Wed 25 Jun, 10:18</span></div>
+      </div>
+      <div class="photo-body">
+        <div class="caption">Windows installed, ground floor</div>
+        <div class="meta-row">
+          <span class="uploader">Tom S.</span>
+          <span class="status-pill ok">On track</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="photo-card" data-house-item="C" data-status="ok">
+      <div class="photo-frame">
+        <img src="https://picsum.photos/seed/edenC3/500/375" alt="Interior painting, House C">
+        <div class="house-badge">C</div>
+        <div class="stamp"><span class="date">Thu 02 Jul, 16:47</span></div>
+      </div>
+      <div class="photo-body">
+        <div class="caption">First coat, living room walls</div>
+        <div class="meta-row">
+          <span class="uploader">Tom S.</span>
+          <span class="status-pill ok">On track</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer class="tabbar">
+  <a href="site-app-mockup-houses.html">Dashboard</a>
+  <a href="#" class="disabled">Tasks</a>
+  <a href="#" class="disabled">Purchases</a>
+  <a href="site-app-progress-photos.html" class="active">Progress photos</a>
+  <a href="#" class="disabled">Team</a>
+</footer>
+
+<script>
+  let currentHouse = 'all';
+  let currentStatus = 'all';
+
+  function applyFilters(){
+    let visibleCount = 0, flagCount = 0, okCount = 0;
+    document.querySelectorAll('.photo-card').forEach(card=>{
+      const houseMatch = currentHouse === 'all' || card.dataset.houseItem === currentHouse;
+      const statusMatch = currentStatus === 'all' || card.dataset.status === currentStatus;
+      const show = houseMatch && statusMatch;
+      card.style.display = show ? '' : 'none';
+      if(houseMatch){
+        visibleCount++;
+        if(card.dataset.status === 'flag') flagCount++; else okCount++;
+      }
+    });
+    document.getElementById('sum-total').textContent = visibleCount;
+    document.getElementById('sum-flag').textContent = flagCount;
+    document.getElementById('sum-ok').textContent = okCount;
+
+    const anyShown = Array.from(document.querySelectorAll('.photo-card')).some(c=>c.style.display !== 'none');
+    let empty = document.getElementById('empty-state');
+    if(!anyShown){
+      if(!empty){
+        empty = document.createElement('div');
+        empty.id = 'empty-state';
+        empty.className = 'empty-state';
+        empty.textContent = 'No photos match this filter.';
+        document.getElementById('gallery').appendChild(empty);
+      }
+    } else if(empty){
+      empty.remove();
+    }
+  }
+
+  document.querySelectorAll('.tab-group button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.tab-group button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      currentHouse = btn.dataset.house;
+      applyFilters();
+    });
+  });
+
+  document.querySelectorAll('.status-filter button').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.querySelectorAll('.status-filter button').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      currentStatus = btn.dataset.status;
+      applyFilters();
+    });
+  });
+
+  applyFilters();
+</script>
+
+</body>
+</html>

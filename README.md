@@ -1,7 +1,12 @@
 # Construction Site Manager 
 
-HTML Mockups for a property investment client, for which I created to help the client with keeping track of task and other aspect related to the construction business. 
+## Overview
+This project contains the initial HTML mockups developed for a property investment client. The dashboard was specifically designed to help the client track tasks, manage personnel, and oversee various aspects related to the daily operations of their construction business.
 
-Working on creating an app with a similar concept to create a platform for different companies to use. 
+## Future Plans
+
+While currently existing as custom HTML mockups for a single client, active work is being done to evolve this concept into a comprehensive, multi-tenant application. The goal is to build a scalable platform that allows various construction and property management companies to utilize the tool for their own site management needs.
+
+This platform will consist of tools/promts to use in Claude AI for companies to use, to help create and customise the platform to their preferences.
 
 ![Image Unavailable](Inventory_demo_for_README.png)

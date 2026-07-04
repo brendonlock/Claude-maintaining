@@ -13,4 +13,4 @@ This platform will consist of tools/promts to use in Claude AI for companies to 
 ### Demo Images
 ![Image Unavailable](Inventory_demo_for_README.png)
 
-![Image Unavailable](register_demo_for_README.png)
+![Image Unavailable](register_demo_for_README.jpeg)
